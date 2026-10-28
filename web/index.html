@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0c121b" />
+    <title>ParkSense / Operations</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand"><span class="brand-mark">⌁</span><span><b>Park</b>Sense</span><small>EDGE OPERATIONS</small></div>
+        <nav aria-label="Primary navigation">
+          <a class="active" href="#overview"><span>◈</span> Live overview</a>
+          <a href="#garage"><span>▦</span> Garage map</a>
+          <a href="#systems"><span>⌘</span> Edge systems</a>
+          <a href="#events"><span>≋</span> Event stream</a>
+        </nav>
+        <div class="sidebar-foot"><span class="pulse-dot"></span><span>Prototype cluster</span><strong>v0.8.4</strong></div>
+      </aside>
+
+      <main class="main">
+        <header class="topbar">
+          <div><div class="eyebrow">SMART PARKING / LIVE COMMAND</div><h1>Good morning, operator.</h1></div>
+          <div class="top-actions">
+            <div class="connection-pill"><span class="status-dot" id="connection-dot"></span><span id="connection-label">Connecting</span><em id="last-seen">—</em></div>
+            <button class="icon-button" id="refresh-btn" title="Refresh state" aria-label="Refresh state">↻</button>
+            <div class="avatar">KS</div>
+          </div>
+        </header>
+
+        <section class="hero-row" id="overview">
+          <div class="hero-copy"><span class="live-tag"><i></i> LIVE MONITORING</span><h2>Parking flow,<br /><span>at a glance.</span></h2><p>Real-time occupancy intelligence from the Raspberry Pi edge node.</p></div>
+          <div class="hero-stat"><div class="ring" id="occupancy-ring"><div><strong id="occupancy-percent">—</strong><span>occupied</span></div></div><div><span class="muted-label">CURRENT CAPACITY</span><b><span id="occupied-count">0</span> / <span id="total-count">20</span> units</b><small><span class="trend-up">●</span> <span id="available-count">20</span> spaces open</small></div></div>
+          <div class="hero-actions"><button class="primary-btn" id="start-btn"><span>▶</span> Start monitoring</button><button class="secondary-btn" id="stop-btn"><span>■</span> Pause system</button></div>
+        </section>
+
+        <section class="metric-grid" aria-label="Parking metrics">
+          <article class="metric-card"><div class="metric-icon amber">↗</div><div><span>VEHICLES TODAY</span><strong id="today-count">38</strong><small id="today-detail">24 cars · 14 bikes</small></div><b class="metric-change">+12.5%</b></article>
+          <article class="metric-card"><div class="metric-icon blue">⏱</div><div><span>AVG. DWELL TIME</span><strong id="dwell-time">42m</strong><small>Across active sessions</small></div><b class="metric-change neutral">— 2m</b></article>
+          <article class="metric-card"><div class="metric-icon green">⌁</div><div><span>SYSTEM HEALTH</span><strong id="health-value">98.7%</strong><small>All nodes responding</small></div><b class="metric-change good">Healthy</b></article>
+        </section>
+
+        <div class="content-grid">
+          <section class="panel garage-panel" id="garage">
+            <div class="panel-heading"><div><span class="section-kicker">FLOOR 01 / EAST WING</span><h3>Garage occupancy</h3></div><div class="legend"><span><i class="legend-dot car"></i>Car</span><span><i class="legend-dot bike"></i>Bike</span><span><i class="legend-dot empty"></i>Available</span></div></div>
+            <div class="garage-map"><div class="lane lane-left"><span>ENTRY</span><i>↓</i><span>EXIT</span></div><div class="slot-grid" id="slot-grid"></div><div class="lane lane-right"><span>EXIT</span><i>↓</i><span>ENTRY</span></div></div>
+            <div class="garage-footer"><span><i class="mini-signal"></i> Sensors synced <b id="sensor-sync">just now</b></span><span>Last update <b id="state-updated">—</b></span></div>
+          </section>
+
+          <section class="panel flow-panel">
+            <div class="panel-heading"><div><span class="section-kicker">TRAFFIC CONTROL</span><h3>Vehicle flow</h3></div><span class="live-tag compact"><i></i> LIVE</span></div>
+            <div class="flow-visual"><div class="flow-label entry-label">ENTRY GATE <small>Camera 01</small></div><div class="road"><div class="road-line"></div><div id="flow-vehicle" class="flow-vehicle car-shape">●</div></div><div class="flow-label exit-label">EXIT GATE <small>Sensor 02</small></div></div>
+            <div class="flow-caption"><div><span id="flow-direction">Monitoring lanes</span><b id="flow-vehicle-type">Awaiting vehicle</b></div><span class="flow-time" id="flow-time">—</span></div>
+            <div class="flow-actions"><button class="outline-btn" data-action="car-entry">＋ Car entry</button><button class="outline-btn" data-action="bike-entry">＋ Bike entry</button><button class="outline-btn subtle" data-action="car-exit">− Car exit</button><button class="outline-btn subtle" data-action="bike-exit">− Bike exit</button></div>
+          </section>
+        </div>
+
+        <div class="lower-grid">
+          <section class="panel systems-panel" id="systems"><div class="panel-heading"><div><span class="section-kicker">EDGE PIPELINE</span><h3>Connected systems</h3></div><span class="tiny-status"><i></i> 6 / 6 online</span></div><div class="system-graph"><div class="system-node raspberry"><span class="node-icon">⌬</span><b>Raspberry Pi</b><small>Edge controller</small><i></i></div><div class="connector one"></div><div class="graph-column"><div class="system-node"><span class="node-icon camera">◉</span><b>Camera</b><small>Live capture · 30 fps</small><i></i></div><div class="system-node"><span class="node-icon sensors">⌁</span><b>IR Sensors</b><small>Entry / exit gates</small><i></i></div></div><div class="connector two"></div><div class="graph-column"><div class="system-node"><span class="node-icon ml">✦</span><b>ML classifier</b><small>Car / bike · 97.4%</small><i></i></div><div class="system-node"><span class="node-icon state">▣</span><b>Parking state</b><small>24 spaces · synced</small><i></i></div></div><div class="connector three"></div><div class="system-node dashboard-node"><span class="node-icon dashboard">▤</span><b>Dashboard</b><small>WebSocket · active</small><i></i></div></div></section>
+          <section class="panel events-panel" id="events"><div class="panel-heading"><div><span class="section-kicker">AUDIT TRAIL</span><h3>Recent events</h3></div><button class="text-btn" id="clear-events">Clear all</button></div><div class="event-list" id="event-list"></div></section>
+        </div>
+        <footer class="page-footer"><span>ParkSense Edge <b>·</b> Local operations dashboard</span><span>Data refresh <b>1s</b> <i class="footer-dot"></i></span></footer>
+      </main>
+    </div>
+    <script src="app.js"></script>
+  </body>
+</html>
